@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss:SSS} [%p] [%C.%M.%L] [%t] : %m %n</Property>
+        <Property name="LEMON_TREE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss:SSS} [%p] [%X{REQUEST_ID}] [%C.%M.%L] [%t] : %m %n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="AnotherConsole" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LEMON_TREE_LOG_PATTERN}"/>
+        </Console>
+        <RollingFile name="TimeRollingFile" fileName="./target/lemon-tree.log" filePattern="./target/lemon-tree_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${LEMON_TREE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="24"/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="LemonTreeMetricLog" fileName="./target/lemon-tree-metric.log" filePattern="./target/lemon-tree-metric_%d{yyyy-MM-dd}_%i.log">
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="24"/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="TargetClassTimeRollingFile" fileName="./target/service-call-monitor.log" filePattern="./target/service-call-monitor_%d{yyyy-MM-dd}_%i.log">
+            <PatternLayout pattern="${LEMON_TREE_LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="24"/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="org.hibernate.validator.internal.util.Version" level="warn" />
+        <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
+        <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
+        <Logger name="org.springframework.core.log.LogFormatUtils" level="warn" />
+        <logger name="io.lemon.tree.logger.ServiceCallMonitorLogger" level="info">
+            <AppenderRef ref="TargetClassTimeRollingFile"/>
+        </logger>
+        <logger name="io.lemon.tree.logger.LemonTreeMetricLog" level="debug">
+            <AppenderRef ref="LemonTreeMetricLog"/>
+        </logger>
+<!--        <logger name="io.lemon.tree" level="info" additivity="false">
+            <AppenderRef ref="TimeRollingFile"/>
+        </logger>-->
+        <logger name="io.lemon.tree" level="info" >
+            <AppenderRef ref="TimeRollingFile"/>
+        </logger>
+    </Loggers>
+</Configuration>
