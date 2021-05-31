@@ -3,6 +3,7 @@ package io.lemon.tree.common;
 public enum LemonTreeResponseEnum {
 
     SUCCESS(2000, "OK"),
+    HANDLER_NOT_FOUND(4004, "404 not found"),
     BAD_REQUEST(4000, "Bad Request"),
     PARAM_ERROR(1001, "parameter error"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error");

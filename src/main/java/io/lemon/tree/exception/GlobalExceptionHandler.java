@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public LemonTreeResponse defaultExceptionHandler(Exception e) {
         LemonTreeResponse response = null;
         if (e instanceof NoHandlerFoundException) {
-            response = LemonTreeResponse.failure();
+            response = LemonTreeResponse.construct(LemonTreeResponseEnum.HANDLER_NOT_FOUND);
             response.setMessage("please check the request path");
         } else if (e instanceof HttpMessageConversionException) {
             response = LemonTreeResponse.failure();
